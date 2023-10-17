@@ -41,6 +41,8 @@
   <ItemGroup>
     <None Include="Resources\shaders\blinn_phong.frag" />
     <None Include="Resources\shaders\blinn_phong.vert" />
+    <None Include="Resources\shaders\cloudPostProcessing.frag" />
+    <None Include="Resources\shaders\cloudPostProcessing.vert" />
     <None Include="Resources\shaders\draw_model.frag" />
     <None Include="Resources\shaders\draw_model.vert" />
     <None Include="Resources\shaders\hdrToSkyobox.frag" />

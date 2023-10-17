@@ -61,8 +61,10 @@ public:
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
-    void draw() {
+    void draw(bool clearBuffer = false) {
         glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+        if(clearBuffer)
+            glClear(GL_COLOR_BUFFER_BIT);
         //glBindFramebuffer(GL_FRAMEBUFFER, 0);
         
         for (int i = 0; i < renderBehaviours.size(); i++)

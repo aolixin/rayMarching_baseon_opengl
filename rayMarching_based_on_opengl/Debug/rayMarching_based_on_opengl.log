@@ -1,4 +1,4 @@
 ﻿  test1.cpp
 D:\document\openglProject\rayMarching_based_on_opengl\rayMarching_based_on_opengl\include\RenderPass.h(50,31): warning C4018: “<”: 有符号/无符号不匹配
-D:\document\openglProject\rayMarching_based_on_opengl\rayMarching_based_on_opengl\include\RenderPass.h(68,27): warning C4018: “<”: 有符号/无符号不匹配
+D:\document\openglProject\rayMarching_based_on_opengl\rayMarching_based_on_opengl\include\RenderPass.h(70,27): warning C4018: “<”: 有符号/无符号不匹配
   rayMarching_based_on_opengl.vcxproj -> D:\document\openglProject\rayMarching_based_on_opengl\Debug\rayMarching_based_on_opengl.exe

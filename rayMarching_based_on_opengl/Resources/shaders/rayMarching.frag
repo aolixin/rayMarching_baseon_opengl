@@ -107,9 +107,8 @@ vec4 getCloud(vec3 worldPos, vec3 cameraPos) {
     vec3 direction = normalize(worldPos - cameraPos);   // 视线射线方向
     vec3 step = direction * 0.25;   // 步长
     vec4 colorSum = vec4(0);        // 积累的颜色
-    vec3 point = cameraPos;         // 从相机出发开始测试
-    // 如果相机在云层下，将测试起始点移动到云层底部 bottom
-    
+    vec3 point = cameraPos;         // 从相机出发开始测
+
     // 如果相机在云层下，将测试起始点移动到云层底部 bottom
     if(point.y<bottom) {
             
@@ -148,8 +147,6 @@ vec4 getCloud(vec3 worldPos, vec3 cameraPos) {
 
         vec4 color = vec4(base * light,density);
 
-        //vec4 color = vec4(0.9, 0.8, 0.7, 1.0) * density * 0.3;    // 当前点的颜色
-        //vec4 color = vec4(0.9, 0.8, 0.7, 1.0) * 0.1;    // 当前点的颜色
         colorSum = colorSum + color * (1.0 - colorSum.a);   // 与累积的颜色混合
     }
 
@@ -162,9 +159,9 @@ void main()
 {
     vec3 pix = vec3((gl_FragCoord.xy /vec2(1920,1080) ) * 2 - vec2(1),gl_FragCoord.z*2-1);
 
-    vec3 bgColor = texture2D(TexBgColor,pix.xy * 0.5 + 0.5).rgb;
     vec4 cloud = getCloud(FragPos, viewPos); // 云颜色
+    vec4 black = vec4(0);
+    cloud = (cloud.r <= 0.05 && cloud.g <= 0.05 &&cloud.b <= 0.05)?black:cloud;
 
-    FragColor.rgb = bgColor.rgb*(1.0 - cloud.a) + cloud.rgb;    // 混色
-    FragColor.a = 1.0;
+    gl_FragData[0] = cloud;
 } 

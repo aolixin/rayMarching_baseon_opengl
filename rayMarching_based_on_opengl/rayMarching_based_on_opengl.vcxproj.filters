@@ -103,5 +103,11 @@
     <None Include="Resources\shaders\TexToScreen.vert">
       <Filter>资源文件</Filter>
     </None>
+    <None Include="Resources\shaders\cloudPostProcessing.frag">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="Resources\shaders\cloudPostProcessing.vert">
+      <Filter>资源文件</Filter>
+    </None>
   </ItemGroup>
 </Project>

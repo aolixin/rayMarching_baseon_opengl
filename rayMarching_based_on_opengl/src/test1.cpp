@@ -95,6 +95,7 @@ int main()
     Shader renderSkyBoxShader("Resources/shaders/renderSkyBoxShader.vert", "Resources/shaders/renderSkyBoxShader.frag");
     //渲染纹理到屏幕
     Shader TexToScreenShader("Resources/shaders/TexToScreen.vert", "Resources/shaders/TexToScreen.frag");
+    Shader cloudPostProcessingShader("Resources/shaders/cloudPostProcessing.vert", "Resources/shaders/cloudPostProcessing.frag");
 
     // load models
     // -----------
@@ -103,7 +104,6 @@ int main()
 
 
     GLint envCubemap = buildEnvcubMap();
-    //GLint noiseMap = LoadTexture("Resources/textrues/PerlinNoise.png");
 
     // pass1 --------------------------------------------------------------------------
     // 渲染基础场景
@@ -129,13 +129,18 @@ int main()
     // pass2 --------------------------------------------------------------------------
     // 渲染体积云
     RenderPass pass2;
-    pass2.attachments.push_back(pass1.attachments[0]); //颜色
+    //pass2.attachments.push_back(pass1.attachments[0]); //颜色
+    pass2.attachments.push_back(getTextureRGBA32F(SCR_WIDTH, SCR_HEIGHT)); //颜色
     pass2.attachmentTypes.push_back(GL_COLOR_ATTACHMENT0);
 
     pass2.depthBuffer = pass1.depthBuffer;
 
     pass2.renderBehaviours.push_back(drawCube);
+    pass2.renderBehaviours.push_back(renderToScreen);
+
     pass2.shaders.push_back(rayMarchingShader);
+    pass2.shaders.push_back(cloudPostProcessingShader);
+
     pass2.bindData();
 
     // pass3 --------------------------------------------------------------------------
@@ -150,6 +155,13 @@ int main()
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, pass1.attachments[0]);
     rayMarchingShader.setInt("TexBgColor", 2);
+    
+    cloudPostProcessingShader.use();
+    glActiveTexture(GL_TEXTURE3);
+    glBindTexture(GL_TEXTURE_2D, pass2.attachments[0]);
+    cloudPostProcessingShader.setInt("TexInput", 3);
+
+
     
     /*glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_2D, noiseMap);
@@ -175,7 +187,7 @@ int main()
 
         // render
         // ------
-        glClearColor(1.0f, 0.05f, 0.05f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
@@ -229,13 +241,18 @@ int main()
         rayMarchingShader.setFloat("cloudThickness", cloudThickness);
         rayMarchingShader.setVec3("lightPos", sunPos);
 
-        pass2.draw();
+        pass2.draw(true);
 
         // pass3 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
         TexToScreenShader.use();
-        glActiveTexture(GL_TEXTURE0);
+        glActiveTexture(GL_TEXTURE4);
         glBindTexture(GL_TEXTURE_2D, pass1.attachments[0]);
-        TexToScreenShader.setInt("Tex", 0);
+        TexToScreenShader.setInt("TexBackground", 4);
+        glActiveTexture(GL_TEXTURE5);
+        glBindTexture(GL_TEXTURE_2D, pass2.attachments[0]);
+        TexToScreenShader.setInt("TexCloud", 5);
+
+
         TexToScreenShader.setFloat("cloudSize", cloudSize);
 
         pass3.draw();

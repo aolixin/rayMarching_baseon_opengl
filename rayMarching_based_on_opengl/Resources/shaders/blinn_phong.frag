@@ -1,7 +1,7 @@
 #version 330 core
-out vec4 FragColor;
+//out vec4 FragColor;
 
-layout (location = 0)out vec4 color;
+//layout (location = 0)out vec4;
 
 in vec3 Normal;  
 in vec3 FragPos;  
