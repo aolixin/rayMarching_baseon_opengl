@@ -184,7 +184,7 @@ int main()
         // input
         // -----
         processInput(window);
-
+        frameCount++;
         // render
         // ------
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -240,6 +240,7 @@ int main()
         rayMarchingShader.setFloat("cloudHeight", cloudHeight);
         rayMarchingShader.setFloat("cloudThickness", cloudThickness);
         rayMarchingShader.setVec3("lightPos", sunPos);
+        rayMarchingShader.setInt("frameCount", frameCount);
 
         pass2.draw(true);
 

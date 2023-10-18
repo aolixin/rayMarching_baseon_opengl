@@ -14,6 +14,7 @@ uniform float cloudSize;
 uniform float cloudHeight;
 
 uniform float cloudThickness;
+uniform int frameCount;
 
 float bottom = cloudHeight - cloudThickness;
 float top = cloudHeight + cloudThickness;
@@ -25,7 +26,7 @@ float top = cloudHeight + cloudThickness;
 
 //#define bottom 13   // ÔÆ²ãµ×²¿
 //#define top 20      // ÔÆ²ã¶¥²¿
-#define cellSize 64   // worleyNoise ÃÜ¶È
+#define cellSize 16  // worleyNoise ÃÜ¶È
 float noiseMapSize = 512;
 
 vec2 hash(vec2 p)
@@ -157,11 +158,12 @@ vec4 getCloud(vec3 worldPos, vec3 cameraPos) {
 
 void main()
 {
-    vec3 pix = vec3((gl_FragCoord.xy /vec2(1920,1080) ) * 2 - vec2(1),gl_FragCoord.z*2-1);
+    //vec3 pix = vec3((gl_FragCoord.xy /vec2(1920,1080) ) * 2 - vec2(1),gl_FragCoord.z*2-1);
 
-    vec4 cloud = getCloud(FragPos, viewPos); // ÔÆÑÕÉ«
+    vec4 cloud = getCloud(FragPos  , viewPos); // ÔÆÑÕÉ«
     vec4 black = vec4(0);
     cloud = (cloud.r <= 0.05 && cloud.g <= 0.05 &&cloud.b <= 0.05)?black:cloud;
 
     gl_FragData[0] = cloud;
+    //gl_FragData[0] = vec4(worleyNoise(FragPos + frameCount % 1000 * 0.1));
 } 
